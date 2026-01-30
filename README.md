@@ -48,3 +48,58 @@ python fetch_daily_tv.py --target corn --mode yday --prev_ema <DB에서 읽은 �
 ```
 
 이거로 작동하면 됨
+
+# 뉴스데이터 추가
+
+## (1) 단일 날짜 수집
+```bash
+python fetch_daily_news_gdelt.py \
+  --date 2025-11-14 \
+  --out ./data/_new/news_20251114_tilda_compat.csv \
+  --max_per_keyword 300 \
+  --dedupe_by_url 1 \
+  --workers 12 \
+  --sourcelang English \
+  --verbose 1 \
+  --log_every 50 \
+  --print_fail 1
+```
+
+## (2) 기간 수집
+```bash
+python fetch_daily_news_gdelt.py \
+  --date_from 2025-11-01 \
+  --date_to 2025-11-14 \
+  --out ./data/_new/news_20251101_1114_tilda_compat.csv \
+  --max_per_keyword 300 \
+  --dedupe_by_url 1 \
+  --workers 12 \
+  --sourcelang English \
+  --verbose 1
+```
+## 주요 옵션 설명
+옵션	의미
+
+`--date`	단일 날짜(YYYY-MM-DD)
+
+`--date_from`, `--date_to`	기간 수집
+
+`--out`	출력 CSV 경로
+
+`--max_per_keyword`	키워드당 최대 기사 수(0이면 제한 없음)
+
+`--dedupe_by_url`	1이면 URL 기준 중복 제거
+
+`--workers`	기사 페이지 크롤링 병렬 스레드 수
+
+`--sourcelang`	GDELT 언어 필터 (예: English, ALL)
+
+`--all_text_maxlen`	all_text 최대 길이(기본 215)
+
+`--description_maxlen`	description 최대 길이(기본 260)
+
+`--max_total_candidates`	(가드레일) 전체 후보 URL 상한
+--max_pages_per_keyword	(가드레일) 키워드별 ArtList 페이지 상한
+--max_runtime_sec	(가드레일) 전체 실행 시간 상한
+--print_fail	1이면 실패/재시도 로그 출력
+--verbose	1이면 진행 로그 출력
